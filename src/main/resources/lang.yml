@@ -46,7 +46,7 @@ meta-list:
   - ""
   - "<gradient:#ef709b:#fa9372><bold>META</bold></gradient> <white>┃ List of metas"
   - ""
-  - "<white> ▪ <light_purple>%meta%</light_purple> - <yellow>%type%</yellow> - <green>%party_mode%</green>"
+  - "<white> ▪ <light_purple>%meta%</light_purple> - <yellow>%type%</yellow> - <green>%team%</green>"
   - ""
 
 empty:

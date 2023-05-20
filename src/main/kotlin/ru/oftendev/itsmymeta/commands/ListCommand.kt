@@ -22,7 +22,7 @@ class ListCommand(plugin: ItsMyMeta): Subcommand(
                         sender.sendMessage(
                             it.replace("%meta%", meta.id)
                                 .replace("%type%", meta.type.id)
-                                .replace("%party_mode%", meta.partyMode.id)
+                                .replace("%team%", meta.partyMode.id)
                                 .formatEco(sender as? Player)
                         )
                     }

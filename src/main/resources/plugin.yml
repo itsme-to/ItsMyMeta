@@ -1,0 +1,17 @@
+name: ${pluginName}
+version: ${version}
+main: ru.oftendev.itsmymeta.ItsMyMeta
+author: _OfTeN_
+api-version: 1.19
+depend:
+  - eco
+softdepend:
+  - SuperiorSkyblock2
+  - PlaceholderAPI
+  - BentoBox
+  - FactionsUUID
+  - HuskTowns
+  - ItsMyAchievement
+commands:
+  itsmymeta:
+    aliases: [meta, imm]

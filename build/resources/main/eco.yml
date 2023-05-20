@@ -1,0 +1,3 @@
+environment:
+  - name: libreforge version
+    value: 4.2.2

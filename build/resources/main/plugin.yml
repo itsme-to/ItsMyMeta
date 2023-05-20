@@ -1,0 +1,17 @@
+name: ItsMyMeta
+version: 1.0.0
+main: ru.oftendev.itsmymeta.ItsMyMeta
+author: _OfTeN_
+api-version: 1.19
+depend:
+  - eco
+softdepend:
+  - SuperiorSkyblock2
+  - PlaceholderAPI
+  - BentoBox
+  - FactionsUUID
+  - HuskTowns
+  - ItsMyAchievement
+commands:
+  itsmymeta:
+    aliases: [meta, imm]

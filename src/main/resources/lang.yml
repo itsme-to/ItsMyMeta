@@ -10,6 +10,8 @@ messages:
   invalid-meta: "Invalid meta!"
   requires-value: "You must specify an value"
   invalid-value: "Invalid value!"
+  requires-place: "You must specify a place"
+  invalid-place: "Invalid place!"
   meta-given: "You have given <light_purple>%meta%</light_purple> from <aqua>%player%</aqua> with the value of <yellow>%value%"
   meta-taken: "You have taken <light_purple>%meta%</light_purple> from <aqua>%player%</aqua> with the value of <yellow>%value%"
   meta-reset: "You have reset <light_purple>%meta%</light_purple> from <aqua>%player%"
@@ -27,6 +29,10 @@ messages:
   cannot-afford: "You can't afford to do this!"
   paid-player: "You paid <aqua>%player%</aqua> <yellow>%amount%</yellow> %currency%<white>!"
   too-much: "You can't pay <aqua>%player%</aqua> this many %currency%<white> as they already have too many!"
+  leaderboard:
+    place-empty: "Meta <light_purple>%meta%</light_purple> has place <yellow>%place%</yellow> empty"
+    place: "Place <yellow>%place%</yellow> for <light_purple>%meta%</light_purple> leaderboard is
+     <aqua>%name%</aqua>: <yellow>%value%</yellow>"
 
 help:
   - ""

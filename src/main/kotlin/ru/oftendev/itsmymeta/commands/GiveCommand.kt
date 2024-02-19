@@ -60,6 +60,7 @@ class GiveCommand(plugin: ItsMyMeta): Subcommand(
         }
 
         if (args.lastOrNull()?.equals("-s", true) == true) return
+        if (args.lastOrNull()?.equals("-s", true) == true) return
         sender.sendMessage(plugin.langYml.getFormattedString("messages.prefix") +
             plugin.langYml.getString("messages.meta-given")
             .replace("%player%", player.savedDisplayName)

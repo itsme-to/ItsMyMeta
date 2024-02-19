@@ -38,6 +38,7 @@ class ResetCommand(plugin: ItsMyMeta): Subcommand(
 
         player.resetMeta(meta)
 
+        if (args.lastOrNull()?.equals("-s", true) == true) return
         sender.sendMessage(plugin.langYml.getFormattedString("messages.prefix") +
                 plugin.langYml.getString("messages.meta-reset")
             .replace("%player%", player.savedDisplayName)

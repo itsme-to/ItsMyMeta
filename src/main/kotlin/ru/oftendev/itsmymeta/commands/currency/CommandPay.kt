@@ -81,6 +81,7 @@ class CommandPay(
         recipient.adjustBalance(currency, amount)
         player.adjustBalance(currency, -amount)
 
+        if (args.lastOrNull()?.equals("-s", true) == true) return
         player.sendMessage(
             plugin.langYml.getMessage("paid-player", StringUtils.FormatOption.WITHOUT_PLACEHOLDERS)
                 .replace("%player%", recipient.savedDisplayName)

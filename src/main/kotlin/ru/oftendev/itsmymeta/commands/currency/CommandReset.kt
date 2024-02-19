@@ -49,6 +49,7 @@ class CommandReset(
 
         player.resetMeta(currency.parent)
 
+        if (args.lastOrNull()?.equals("-s", true) == true) return
         sender.sendMessage(
             plugin.langYml.getMessage("reset-currency", StringUtils.FormatOption.WITHOUT_PLACEHOLDERS)
                 .replace("%player%", player.savedDisplayName)

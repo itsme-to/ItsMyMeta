@@ -61,6 +61,7 @@ class CommandSet(
 
         player.setBalance(currency, amount)
 
+        if (args.lastOrNull()?.equals("-s", true) == true) return
         sender.sendMessage(
             plugin.langYml.getMessage("set-currency", StringUtils.FormatOption.WITHOUT_PLACEHOLDERS)
                 .replace("%player%", player.savedDisplayName)

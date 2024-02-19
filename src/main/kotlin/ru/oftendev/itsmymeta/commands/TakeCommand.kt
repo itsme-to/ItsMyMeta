@@ -56,6 +56,7 @@ class TakeCommand(plugin: ItsMyMeta): Subcommand(
             })
         }
 
+        if (args.lastOrNull()?.equals("-s", true) == true) return
         sender.sendMessage(plugin.langYml.getFormattedString("messages.prefix") +
                 plugin.langYml.getString("messages.meta-taken")
             .replace("%player%", player.savedDisplayName)

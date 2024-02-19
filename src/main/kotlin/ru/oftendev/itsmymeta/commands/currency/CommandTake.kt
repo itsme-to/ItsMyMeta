@@ -61,6 +61,7 @@ class CommandTake(
 
         player.adjustBalance(currency, -amount)
 
+        if (args.lastOrNull()?.equals("-s", true) == true) return
         sender.sendMessage(
             plugin.langYml.getMessage("took-currency", StringUtils.FormatOption.WITHOUT_PLACEHOLDERS)
                 .replace("%player%", player.savedDisplayName)

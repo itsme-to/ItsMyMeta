@@ -21,6 +21,7 @@ class MainCommand(plugin: ItsMyMeta): PluginCommand(
             .addSubcommand(ListCommand(plugin))
             .addSubcommand(CommandCurrency(plugin))
             .addSubcommand(ResetCommand(plugin))
+            .addSubcommand(LeaderboardCommand(plugin))
     }
 
     override fun onExecute(sender: CommandSender, args: MutableList<String>) {

@@ -8,6 +8,7 @@ import com.willfp.libreforge.loader.LibreforgePlugin
 import com.willfp.libreforge.loader.configs.ConfigCategory
 import org.bukkit.event.Listener
 import ru.oftendev.itsmymeta.commands.MainCommand
+import ru.oftendev.itsmymeta.listeners.MetaListener
 import ru.oftendev.itsmymeta.meta.Metas
 import ru.oftendev.itsmymeta.target.TargetType
 import java.text.DecimalFormat
@@ -27,7 +28,9 @@ class ItsMyMeta: LibreforgePlugin() {
      * @return A list of all listeners.
      */
     override fun loadListeners(): MutableList<Listener> {
-        return mutableListOf()
+        return mutableListOf(
+            MetaListener()
+        )
     }
 
     override fun loadPluginCommands(): MutableList<PluginCommand> {
@@ -98,4 +101,8 @@ fun Number.stringFormat(): String {
 
 fun Number.fixedFormat(): String {
     return FIXED_FORMAT.format(this.toDouble())
+}
+
+fun Number.commaFormat(): String {
+    return DecimalFormat("#,###").format(this)
 }

@@ -5,6 +5,7 @@ import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.data.ServerProfile
 import com.willfp.eco.core.data.keys.PersistentDataKey
 import com.willfp.eco.core.data.keys.PersistentDataKeyType
+import com.willfp.eco.core.data.profile
 import com.willfp.eco.core.placeholder.DynamicPlaceholder
 import com.willfp.eco.core.placeholder.PlayerDynamicPlaceholder
 import com.willfp.eco.core.placeholder.PlayerPlaceholder
@@ -17,12 +18,16 @@ import com.willfp.eco.util.toNiceString
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.OfflinePlayer
+import org.bukkit.block.CreatureSpawner
+import org.bukkit.inventory.meta.BlockStateMeta
 import ru.oftendev.itsmymeta.ItsMyMeta
+import ru.oftendev.itsmymeta.commaFormat
 import ru.oftendev.itsmymeta.fixedFormat
 import ru.oftendev.itsmymeta.meta.enum.StatType
 import ru.oftendev.itsmymeta.stringFormat
 import ru.oftendev.itsmymeta.target.TargetType
 import java.time.Duration
+import java.util.UUID
 import java.util.regex.Pattern
 
 class Meta(
@@ -40,17 +45,27 @@ class Meta(
             .configYml.getInt("leaderboard-cache-lifetime").toLong()))
         .build<Int, LeaderboardCacheEntry?>()
 
+    // val placeholderCache = mutableMapOf<UUID, Any>()
+
     val stats = mutableListOf<MetaStat>()
 
     var placeholder: String? = null
 
     private val saveId = if (isLocal) "${ItsMyMeta.instance.serverID}_${id}" else id
 
+    val hasLeaderboard = this.type in listOf(StatType.DOUBLE, StatType.INTEGER)
+
     fun namespacedForPlayer(player: OfflinePlayer): NamespacedKey {
         return ItsMyMeta.instance.createNamespacedKey(
             "${this.partyMode.getParty(player).getUniqueId()}_${this.saveId.lowercase()}"
         )
     }
+
+    val cachedValueKey = PersistentDataKey(
+        ItsMyMeta.instance.createNamespacedKey("cached_${this.saveId.lowercase()}"),
+        PersistentDataKeyType.STRING,
+        ""
+    )
     
     //
 
@@ -97,7 +112,6 @@ class Meta(
     }
 
     init {
-        // TODO placeholders
         PlayerPlaceholder(
             ItsMyMeta.instance,
             id
@@ -122,6 +136,16 @@ class Meta(
             val v = it.getMeta(this)
             if (v is Number) {
                 v.stringFormat()
+            } else v.toString()
+        }.register()
+
+        PlayerPlaceholder(
+            ItsMyMeta.instance,
+            "${id}_commas"
+        ) {
+            val v = it.getMeta(this)
+            if (v is Number) {
+                v.commaFormat()
             } else v.toString()
         }.register()
 
@@ -188,6 +212,15 @@ class Meta(
                 ?: ItsMyMeta.instance.langYml.getFormattedString("empty.score")
         }.register()
 
+        DynamicPlaceholder(
+            ItsMyMeta.instance,
+            Pattern.compile("${this.id.lowercase()}_leaderboard_[0-9]+_commas")
+        ) {
+            val result = it.split("_").reversed()[1].toInt()
+            getTop(result)?.amount?.toString()?.toDoubleOrNull()?.commaFormat()
+                ?: ItsMyMeta.instance.langYml.getFormattedString("empty.score")
+        }.register()
+
         PlayerPlaceholder(
             ItsMyMeta.instance,
             "${this.id.lowercase()}_leaderboard_position"
@@ -231,7 +264,7 @@ class Meta(
         if (this.type == StatType.STRING) return null
         return topCacheTotal.get(place) {
             val players = Bukkit.getOfflinePlayers().sortedByDescending { it.getMeta(this)
-                .toString().toDouble() }
+                .toString().toDoubleOrNull() ?: 0.0 }
             val target = players.getOrNull(place-1) ?: return@get null
             LeaderboardCacheEntry(target, target.getMeta(this)
                 .toString().toDoubleOrNull() ?: 0.0)
@@ -319,6 +352,10 @@ fun OfflinePlayer.giveMeta(meta: Meta, theValue: Any) {
 }
 
 fun OfflinePlayer.setMeta(meta: Meta, theValue: Any) {
+    meta.placeholder?.let {
+        this.profile.write(meta.cachedValueKey, theValue.toString())
+    }
+
     val sProfile = ServerProfile.load()
     val key = meta.namespacedForPlayer(this)
     when(meta.type) {
@@ -386,7 +423,9 @@ fun OfflinePlayer.canUse(meta: Meta): Boolean {
 
 fun OfflinePlayer.getMeta(meta: Meta): Any {
     meta.placeholder?.let {
-        return NumberUtils.evaluateExpression(meta.placeholder!!, player)
+        return if (player == null) {
+            this.profile.read(meta.cachedValueKey)
+        } else NumberUtils.evaluateExpression(meta.placeholder!!, player)
     }
 
     val sProfile = ServerProfile.load()

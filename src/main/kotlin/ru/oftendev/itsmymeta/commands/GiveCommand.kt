@@ -47,8 +47,6 @@ class GiveCommand(plugin: ItsMyMeta): Subcommand(
             return
         }
 
-        println("Value: $metaValue asInt: ${metaValue.toIntOrNull()} asDouble: ${metaValue.toDoubleOrNull()}")
-
         when(meta.type) {
             StatType.STRING -> player.giveMeta(meta, metaValue)
             StatType.INTEGER -> player.giveMeta(meta, metaValue.toIntOrNull() ?: kotlin.run {
@@ -61,6 +59,7 @@ class GiveCommand(plugin: ItsMyMeta): Subcommand(
             })
         }
 
+        if (args.lastOrNull()?.equals("-s", true) == true) return
         sender.sendMessage(plugin.langYml.getFormattedString("messages.prefix") +
             plugin.langYml.getString("messages.meta-given")
             .replace("%player%", player.savedDisplayName)

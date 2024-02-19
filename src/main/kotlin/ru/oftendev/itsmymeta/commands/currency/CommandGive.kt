@@ -61,6 +61,7 @@ class CommandGive(
 
         player.adjustBalance(currency, amount)
 
+        if (args.lastOrNull()?.equals("-s", true) == true) return
         sender.sendMessage(
             plugin.langYml.getMessage("gave-currency", StringUtils.FormatOption.WITHOUT_PLACEHOLDERS)
                 .replace("%player%", player.savedDisplayName)

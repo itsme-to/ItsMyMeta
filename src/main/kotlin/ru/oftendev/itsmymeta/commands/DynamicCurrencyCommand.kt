@@ -3,11 +3,13 @@ package ru.oftendev.itsmymeta.commands
 import com.willfp.eco.core.EcoPlugin
 import com.willfp.eco.core.command.impl.PluginCommand
 import com.willfp.eco.core.command.impl.Subcommand
+import com.willfp.eco.core.integrations.antigrief.AntigriefManager
 import com.willfp.eco.util.containsIgnoreCase
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.util.StringUtil
+import ru.oftendev.itsmymeta.commands.currency.LeaderboardCurrencyCommand
 import ru.oftendev.itsmymeta.meta.MetaCurrency
 import ru.oftendev.itsmymeta.meta.Metas
 
@@ -25,7 +27,7 @@ class DynamicCurrencyCommand(
         DynamicCurrencySubcommand.allCommands.forEach {
             this.addSubcommand(
                 DynamicCurrencySubcommand(plugin, it, currency)
-            )
+            ).addSubcommand(LeaderboardCurrencyCommand(this.plugin, this.currency))
         }
     }
 
